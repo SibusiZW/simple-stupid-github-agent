@@ -1,6 +1,7 @@
-import { createStep } from "@mastra/core/workflows";
+import { createStep, createWorkflow } from "@mastra/core/workflows";
 import z from "zod";
 import { mastra } from "..";
+import { githubAgent } from "../agents/github-agent";
 
 const approvalStep = createStep({
     id: 'human-appoval',
@@ -59,7 +60,7 @@ const executeTaskStep = createStep({
             }
         }
 
-        const agent = mastra.getAgent('githubAgent');
+        const agent = githubAgent;
 
         const response = await agent.generate(`Perform the following GitHub task: ${inputData.task}`)
         const res = response.text
@@ -68,4 +69,20 @@ const executeTaskStep = createStep({
             result: res
         }
     }
+});
+
+export const githubWorkflow = createWorkflow({
+    id: 'github-workflow',
+    description: "A GitHub workflow",
+
+    inputSchema: z.object({
+        task: z.string()
+    }),
+
+    outputSchema: z.object({
+        result: z.string()
+    }),
 })
+    .then(approvalStep)
+    .then(executeTaskStep)
+    .commit()
