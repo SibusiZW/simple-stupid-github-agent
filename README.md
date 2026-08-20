@@ -1,2 +1,2 @@
 # simple-stupid-github-agent
-A githug agent which is stupid &amp; simple
+A github agent which is stupid &amp; simple
