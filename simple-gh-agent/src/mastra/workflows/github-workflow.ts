@@ -1,6 +1,5 @@
 import { createStep, createWorkflow } from "@mastra/core/workflows";
 import z from "zod";
-import { mastra } from "..";
 import { githubAgent } from "../agents/github-agent";
 
 const approvalStep = createStep({
